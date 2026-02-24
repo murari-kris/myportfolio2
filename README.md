@@ -1,16 +1,33 @@
-# React + Vite
+# 🚀 Krishna Murari | Java & Full-Stack Developer Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to my personal portfolio! This project serves as a central hub to showcase my technical skills, academic journey, and the various projects I've built using Java and React.
 
-Currently, two official plugins are available:
+## 🌐 Live Link
+**Check out the live site here:** [https://myportfolio-beta-five-79.vercel.app](https://myportfolio-beta-five-79.vercel.app)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🛠️ Technical Stack
+* **Frontend:** React.js (Vite), React Router, React Icons
+* **Styling:** Modern CSS3 with Flexbox/Grid and Dark Mode support
+* **Deployment:** Vercel with CI/CD integration
+* **Backend Integration:** Formspree API for serverless contact handling
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ✨ Key Features
+* **Dynamic Navigation:** A smooth, single-page experience using `react-router-dom`.
+* **Responsive Design:** Fully optimized for mobile, tablet, and desktop views.
+* **Production-Ready Routing:** Custom `vercel.json` configuration to handle deep linking and browser refreshes.
+* **Interactive UI:** Includes custom hover effects, a 3D-perspective logo, and a theme switcher.
 
-## Expanding the ESLint configuration
+## 📂 Project Structure
+* `/src/components` - Reusable UI elements
+* `/src/pages` - Individual page layouts (About, Skills, Projects, etc.)
+* `/public` - Static assets and configuration files
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 How to Run Locally
+1. Clone the repo: `git clone https://github.com/murari-kris/Myportfolio.git`
+2. Install dependencies: `npm install`
+3. Start the dev server: `npm run dev`
+
+---
+*Connect with me on [LinkedIn](https://www.linkedin.com/in/javadeveloper-krishna-murari/)*
