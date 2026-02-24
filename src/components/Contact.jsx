@@ -79,7 +79,7 @@ function Contact() {
               <div className="icon-box"><FaLinkedin /></div>
               <div>
                 <h4>LinkedIn</h4>
-                <p>https://www.linkedin.com/in/javadeveloper-krishna-murari/</p>
+                <p>https://www.linkedin.com</p>
               </div>
             </div>
             <div className="info-item">
