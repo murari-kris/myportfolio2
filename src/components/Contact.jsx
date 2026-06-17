@@ -136,21 +136,18 @@ const Contact = React.forwardRef((props, ref) => {
               <p>I'm open to new opportunities. Let's talk!</p>
             </header>
             
-            {/* Added onSubmit handler here */}
             <form onSubmit={onSubmit} className="contact-form-main">
               <div className="input-field-group">
                 <label>Name</label>
-                {/* Added explicit 'name' attribute for Web3Forms parsing */}
                 <input type="text" name="name" placeholder="Your Name" required />
               </div>
               <div className="input-field-group">
                 <label>Email</label>
-                {/* Added explicit 'name' attribute for Web3Forms parsing */}
-                <input type="email" name="name" placeholder="email@example.com" required />
+                {/* FIXED: Changed name="name" to name="email" */}
+                <input type="email" name="email" placeholder="email@example.com" required />
               </div>
               <div className="input-field-group">
                 <label>Message</label>
-                {/* Added explicit 'name' attribute for Web3Forms parsing */}
                 <textarea name="message" placeholder="How can I help you?" rows="4" required></textarea>
               </div>
               <button type="submit" disabled={isSubmitting} className="mint-submit-button">
