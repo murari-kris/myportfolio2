@@ -1,129 +1,329 @@
+/* --- BASE SECTION --- */
 .projects-section {
-  background: linear-gradient(135deg, #f3e8ff 0%, #ffffff 50%, #e0fdf4 100%);
+  background: #030507;
+  padding: 100px 5%;
   min-height: 100vh;
-  font-family: 'Poppins', sans-serif;
-  transition: 0.3s ease;
-  overflow-x: hidden;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
 }
 
-.dark.projects-section {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-}
-
-.projects-wrapper {
-  padding: 4rem 8%;
-  max-width: 1300px;
+.projects-grid {
+  maxWidth: 1200px;
   margin: 0 auto;
-}
-
-.projects-title {
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
-  font-weight: 800;
-  text-align: center;
-  margin-bottom: 3rem;
-  color: var(--text-dark);
-}
-
-.highlight { color: #8b5cf6; }
-
-/* Grid for Projects */
-.projects-container {
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
 }
 
-/* Card Styling */
-.project-card {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  border-radius: 24px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+/* --- LEFT SIDE --- */
+.expertise-label {
+  color: #c1ffda;
+  font-weight: 700;
+  letter-spacing: 4px;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 14px;
 }
 
-.dark .project-card {
-  background: rgba(30, 41, 59, 0.8);
-  border-color: rgba(255, 255, 255, 0.1);
+.main-heading {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 900;
+  letter-spacing: -3px;
+  color: #fff;
+  line-height: 1.05;
+  margin-bottom: 22px;
 }
 
-.project-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 25px 50px rgba(139, 92, 246, 0.15);
+.highlight-text {
+  color: #c1ffda;
+  text-shadow: 0 0 40px rgba(193,255,218,0.22);
 }
 
-/* Image Hover Effect */
-.image-container {
+.description-text {
+  color: #64748b;
+  font-size: 0.97rem;
+  line-height: 1.75;
+  margin-bottom: 36px;
+  max-width: 380px;
+}
+
+.dot-indicators {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.dot {
+  height: 8px;
+  border-radius: 100px;
+}
+
+.current-info {
+  margin-bottom: 30px;
+}
+
+.current-title {
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.current-category {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.next-button {
+  padding: 13px 30px;
+  border-radius: 100px;
+  background: transparent;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.next-button:hover {
+  background: var(--btn-hover-bg);
+}
+
+/* --- RIGHT SIDE / CARDS --- */
+.projects-right {
   position: relative;
-  height: 200px;
-  overflow: hidden;
+  height: 560px;
+  perspective: 1000px;
+  perspective-origin: 50% 40%;
 }
 
-.image-container img {
+.card-motion-wrapper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.project-card {
+  width: 100%;
+  height: 100%;
+  border-radius: 28px;
+  background: rgba(255,255,255,0.025);
+  backdrop-filter: blur(18px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 28px;
+  position: relative;
+}
+
+.glow-orb {
+  position: absolute;
+  top: -70px;
+  right: -70px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+}
+
+.category-tag {
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.icon-links {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.social-icon {
+  color: #64748b;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.social-icon:hover {
+  color: var(--hover-color) !important;
+}
+
+.card-image-wrapper {
+  margin: 18px 0;
+  height: 175px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.05);
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.card-image-wrapper img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: 0.5s ease;
 }
 
-.project-card:hover .image-container img {
-  transform: scale(1.1);
-}
-
-/* Overlay on Hover */
-.overlay {
+.image-overlay {
   position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(139, 92, 246, 0.8);
+  inset: 0;
+  background: linear-gradient(to top, rgba(3,5,7,0.55) 0%, transparent 60%);
+}
+
+.card-info {
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-title-text {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.project-description {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  margin-bottom: 16px;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.tag-pill {
+  padding: 4px 11px;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.live-button {
+  margin-top: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
-  transition: 0.3s ease;
-}
-
-.image-container:hover .overlay {
-  opacity: 1;
-}
-
-.overlay-btn {
-  background: white;
-  color: #8b5cf6;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 50px;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
   gap: 8px;
-}
-
-/* Content Area */
-.project-content { padding: 25px; }
-.project-name { font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; color: var(--text-dark); }
-.project-desc { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px; }
-
-.tech-tag {
-  background: rgba(139, 92, 246, 0.1);
-  color: #8b5cf6;
-  padding: 5px 12px;
-  border-radius: 50px;
-  font-size: 0.75rem;
+  padding: 11px 0;
+  border-radius: 14px;
+  font-size: 0.8rem;
   font-weight: 700;
-  margin-right: 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: 0.25s;
+  cursor: pointer;
 }
 
-/* --- MOBILE RESPONSIVE (Redmi) --- */
-@media (max-width: 1024px) {
-  .projects-wrapper { padding: 2rem 5%; }
-  .projects-container { grid-template-columns: 1fr; }
-  .project-card { max-width: 400px; margin: 0 auto; }
+.live-button:hover {
+  background: rgba(193, 255, 218, 0.2) !important; /* Adjusted dynamically by JS */
+  transform: translateY(-2px);
 }
 
-@media (max-width: 480px) {
-  .projects-title { font-size: 2rem; }
-  .image-container { height: 180px; }
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulse-dot 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.7); }
+}
+
+/* --- REDMI MOBILE RESPONSIVE --- */
+@media (max-width: 768px) {
+  .projects-section {
+    padding: 60px 20px;
+    height: auto; /* Important: allow section to grow */
+  }
+  
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    text-align: center;
+  }
+  
+  .main-heading {
+    font-size: 2.2rem; /* Scaled down for smaller screens */
+    margin-bottom: 15px;
+  }
+
+  .description-text {
+    margin: 0 auto 30px auto;
+    max-width: 100%;
+  }
+
+  /* Image & Card Fixes */
+  .projects-right {
+    height: auto; /* Remove the fixed 480px height */
+    min-height: 450px;
+    perspective: none; /* Keeps text sharp on mobile */
+  }
+
+  .project-card {
+    padding: 20px; /* Increased from 5px to give text room */
+    height: auto; 
+    border-radius: 20px;
+  }
+
+  /* --- ADD THIS INSIDE YOUR EXISTING @media (max-width: 768px) BLOCK --- */
+
+.card-image-wrapper {
+  height: 140px;          /* Reduced height from 175px */
+  width: 85%;             /* Shrinks the width slightly */
+  margin: 10px auto;      /* Centers the smaller image */
+  border-radius: 12px;    /* Slightly smaller radius to match size */
+}
+
+.card-image-wrapper img {
+  object-fit: contain;    /* Shows the full image without cropping */
+  background: #0f172a;    /* Optional: adds a dark background if the image is small */
+}
+
+  .project-description {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  .next-button {
+    margin: 30px auto 0 auto;
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+  }
+
+  .dot-indicators {
+    justify-content: center;
+  }
 }

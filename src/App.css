@@ -1,0 +1,11 @@
+.app-container {
+  /* Ensure no overflow hidden here */
+  overflow: visible;
+  background-color: #030507;
+}
+
+/* Ensure the wrapper divs in App.js don't restrict height */
+.app-container > div {
+  overflow: visible !important;
+  display: block; /* Ensure it's not a flex item that might constrain height */
+}

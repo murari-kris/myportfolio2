@@ -1,142 +1,119 @@
-import React, { useState, useRef } from "react"; // Added useRef
-import { NavLink } from "react-router-dom";
-import myImage from "../assets/my.jpg";
-import TypingEffect from "./TypingEffect";
-import Tilt from "react-parallax-tilt";
-import { 
-  FaUser, FaTools, FaProjectDiagram, FaBriefcase, FaGraduationCap, 
-  FaBars, FaTimes, FaGithub, FaLinkedin, FaInstagram, FaMoon, FaSun 
-} from "react-icons/fa";
+import React, { useState, useEffect, useRef } from "react";
+import myImage from "../assets/image.png"; 
+import { FaArrowUpRightFromSquare, FaHandshake } from "react-icons/fa6";
+import { TfiViewGrid } from "react-icons/tfi";
 import "./About.css";
 
-function About() {
-  const [open, setOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
-  
-  // Create the reference for the logo tilt
+function About({ onNavigate, refs }) {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [showContent, setShowContent] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false); // Added to prevent crash
   const logoRef = useRef(null);
 
-  // Logic for the 3D Mouse Tilt
-  const handleMouseMove = (e) => {
-    const logo = logoRef.current;
-    if (!logo) return;
+  useEffect(() => {
+    const timer = setTimeout(() => setShowContent(true), 1500);
 
-    const { left, top, width, height } = logo.getBoundingClientRect();
-    const x = (e.clientX - left - width / 2) / 10; 
-    const y = (e.clientY - top - height / 2) / 10;
-
-    logo.style.transform = `perspective(1000px) rotateX(${-y}deg) rotateY(${x}deg)`;
-  };
-
-  const handleMouseLeave = () => {
-    if (logoRef.current) {
-      logoRef.current.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
-    }
-  };
-
-  const handleNavClick = () => setOpen(false);
+    const handleMouseMove = (e) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
+    
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      clearTimeout(timer);
+    };
+  }, []);
 
   return (
-    <section className={`about-page ${darkMode ? "dark" : ""}`}>
-      {/* --- Header / Navbar --- */}
-      <nav className="navbar">
-        <div 
-          className="logo" 
-          onMouseMove={handleMouseMove} 
-          onMouseLeave={handleMouseLeave}
-        >
-          {/* Logo Branding with Ref */}
-          <div className="logo-branding" ref={logoRef} style={{ transition: "transform 0.1s ease-out" }}>
-             <div className="logo-scanner">
-                <span className="logo-letter">K</span>
-                <div className="logo-beam"></div>
-             </div>
-             <div className="logo-ring"></div>
-          </div>
-          
-          <div className="logo-info">
-             <span className="logo-name">KRISHNA</span>
-             <div className="logo-status">
-                <span className="status-dot"></span>
-                <span className="status-text">MURARI</span>
-             </div>
-          </div>
+    <section className={`abode-shell ${showContent ? "content-visible" : "content-hidden"}`}>
+      
+      {/* 1. THE ANIMATING LOGO */}
+      <div className="logo-brand-container" ref={logoRef}>
+        <div className="logo-symbol">
+          <div className="symbol-part part-left">K</div>
+          <div className="symbol-part part-right">K</div>
+          <div className="symbol-dot"></div>
         </div>
-
-        <div className="menu-toggle" onClick={() => setOpen(!open)}>
-          {open ? <FaTimes /> : <FaBars />}
+        <div className="logo-text-wrapper">
+          <span className="logo-brand-name">KRISHNA</span>
+          <span className="logo-brand-title">SOFTWARE ENGINEER</span>
         </div>
+      </div>
 
-        <div className={`nav-links ${open ? "mobile-open" : ""}`}>
-          <NavLink to="/about" onClick={handleNavClick}>
-            <FaUser className="nav-i" /> <span>About</span>
-          </NavLink>
-          <NavLink to="/skills" onClick={handleNavClick}>
-            <FaTools className="nav-i" /> <span>Skills</span>
-          </NavLink>
-          <NavLink to="/projects" onClick={handleNavClick}>
-            <FaProjectDiagram className="nav-i" /> <span>Projects</span>
-          </NavLink>
-          <NavLink to="/trainingachievements" onClick={handleNavClick}>
-            <FaBriefcase className="nav-i" /> <span>Certifications</span>
-          </NavLink>
-          <NavLink to="/education" onClick={handleNavClick}>
-            <FaGraduationCap className="nav-i" /> <span>Education</span>
-          </NavLink>
-          <NavLink to="/contact" onClick={handleNavClick}>
-            <FaGraduationCap className="nav-i" /> <span>Contact</span>
-          </NavLink>
-
-          <button className="theme-toggle" onClick={() => setDarkMode(!darkMode)}>
-            {darkMode ? <FaSun /> : <FaMoon />}
-          </button>
+      {/* 2. THE BACKGROUND SYSTEM */}
+      <div className="background-system">
+        <div className="mouse-glow" style={{ left: `${mousePos.x}px`, top: `${mousePos.y}px` }}></div>
+        <div className="bg-grid"></div>
+        
+        <div className="sparkle-container">
+          <span className="sparkle s1">✦</span>
+          <span className="sparkle s2">✦</span>
+          <span className="sparkle s3">✦</span>
+          <span className="sparkle s4">✦</span>
+          <span className="sparkle ms ms1">✦</span>
+          <span className="sparkle ms ms2">✦</span>
+           <span className="sparkle ms ms2">✦</span>
         </div>
-      </nav>
+        {/* Repeating containers kept as requested */}
+        <div className="sparkle-container">
+          <span className="sparkle s1">✦</span>
+          <span className="sparkle s2">✦</span>
+          <span className="sparkle s3">✦</span>
+          <span className="sparkle s4">✦</span>
+          <span className="sparkle ms ms1">✦</span>
+          <span className="sparkle ms ms2">✦</span>
+           <span className="sparkle ms ms2">✦</span>
+        </div>
+        <div className="sparkle-container">
+          <span className="sparkle s1">✦</span>
+          <span className="sparkle s2">✦</span>
+          <span className="sparkle s3">✦</span>
+          <span className="sparkle s4">✦</span>
+          <span className="sparkle ms ms1">✦</span>
+          <span className="sparkle ms ms2">✦</span>
+           <span className="sparkle ms ms2">✦</span>
+        </div>
+      </div>
 
-      {/* --- Content --- */}
-      <div className="main-container">
-        <div className="content-grid">
-          
-          <div className="text-content">
-            <h2 className="greeting">Hello, I'm</h2>
-            <h1 className="name-display">Krishna Murari</h1>
-            <h3 className="typing-box">
-              I am a <span className="highlight"><TypingEffect /></span>
-            </h3>
+      {/* 3. THE REVEAL CONTENT */}
+      <div className="reveal-layer">
+        <div className="mobile-grid-trigger" onClick={() => setMenuOpen(!menuOpen)}>
+          <TfiViewGrid />
+        </div>
+       <nav className={`pill-nav ${menuOpen ? "nav-open" : ""}`}>
+          <a onClick={() => { onNavigate(refs.aboutRef); setMenuOpen(false); }}>Home</a>
+          <a onClick={() => { onNavigate(refs.projectsRef); setMenuOpen(false); }}>Works</a>
+          <a onClick={() => { onNavigate(refs.skillsRef); setMenuOpen(false); }}>Skills</a>
+          <a onClick={() => { onNavigate(refs.eduRef); setMenuOpen(false); }}>Education</a>
+          <a onClick={() => { onNavigate(refs.trainRef); setMenuOpen(false); }}>Achievements</a>
+          <a onClick={() => { onNavigate(refs.contactRef); setMenuOpen(false); }}>Contact</a>
+        </nav>
 
-            <p className="description">
-              I am a passionate Software Engineering student with a strong interest
-              in Java development and full-stack web technologies. I have hands-on
-              experience building web applications using Spring Boot and React.
-            </p>
-
-            <div className="btn-group">
-              <a href="/krishna_Resume.pdf" download className="say-hello-btn">
-                Download Resume
-              </a>
-              <div className="social-icons">
-                <a href="https://github.com/murari-kris" target="_blank" rel="noreferrer"><FaGithub /></a>
-                <a href="https://www.linkedin.com/in/javadeveloper-krishna-murari/" target="_blank" rel="noreferrer"><FaLinkedin /></a>
-                <a href="https://instagram.com" target="_blank" rel="noreferrer"><FaInstagram /></a>
-              </div>
-            </div>
-
-            <div className="stats-row">
-               <div className="stat-item"><strong>2+</strong><span>Years Learning</span></div>
-               <div className="stat-item"><strong>500+</strong><span>LeetCode</span></div>
-               <div className="stat-item"><strong>10+</strong><span>Projects</span></div>
-            </div>
+        <main className="abode-content">
+          <div className="avatar-container">
+            <img src={myImage} alt="Krishna" className="avatar-img" />
+            <div className="status-badge">Available for opportunities</div>
           </div>
 
-          <div className="image-section">
-            <Tilt tiltMaxAngleX={15} tiltMaxAngleY={15} scale={1.02} transitionSpeed={2000}>
-              <div className="photo-frame">
-                <img src={myImage} alt="Krishna Murari" />
-              </div>
-            </Tilt>
-          </div>
+          <header className="hero-header">
+  <h1 className="main-title">
+    Building scalable software <br /> 
+    <span>from backend to UI</span>
+  </h1>
+  <p className="sub-description">
+    Full-Stack Developer focused on high-performance web systems.
+  </p>
+</header>
 
-        </div>
+          <div className="action-group">
+            <button className="btn-white" onClick={() => onNavigate(refs.contactRef)}>
+              <FaHandshake /> Let's talk
+            </button>
+            <a href="https://drive.google.com/file/d/1RgmFrxI8MXgU1WnhfWmR-b5vIkmnMWXS/view?usp=sharing" target="_blank" className="btn-outline">
+              Download Resume <FaArrowUpRightFromSquare />
+            </a>
+          </div>
+        </main>
       </div>
     </section>
   );

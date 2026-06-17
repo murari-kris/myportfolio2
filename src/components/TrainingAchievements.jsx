@@ -1,145 +1,116 @@
-import React, { useState, useRef } from "react";
-import { NavLink } from "react-router-dom";
-import { 
-  FaUser, FaTools, FaProjectDiagram, FaBriefcase, FaGraduationCap, 
-  FaBars, FaTimes, FaMoon, FaSun, FaAward, FaExternalLinkAlt, FaCheckCircle, FaTrophy 
-} from "react-icons/fa";
+import React, { useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { FaAward, FaExternalLinkAlt, FaCheckCircle, FaTrophy } from "react-icons/fa";
 import "./TrainingAchievements.css";
 
-function TrainingAchievements() {
-  const [open, setOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
-  const logoRef = useRef(null);
+const achievements = [
+  {
+    title: "Academic Excellence - 2nd Position",
+    org: "Diploma-SBTE Board",
+    date: "Gold Medalist",
+    desc: "Secured the trophy for 1st position in Diploma.",
+    link: "/certificates/academic.jpeg",
+    icon: <FaTrophy />,
+    accent: "#fcd34d",
+    tag: "Award",
+  },
+  {
+    title: "GenPowerd Data Analytics",
+    org: "Forage",
+    date: "2024",
+    desc: "Professional certification in Data Analytics.",
+    link: "/certificates/forage.png",
+    icon: <FaAward />,
+    accent: "#c1ffda",
+    tag: "Certification",
+  },
+  {
+    title: "HCL Hackathon Certificate",
+    org: "Guvi HCL",
+    date: "Participant",
+    desc: "Recognized for innovative problem-solving.",
+    link: "/certificates/hackathon.jpeg",
+    icon: <FaAward />,
+    accent: "#a5b4fc",
+    tag: "Hackathon",
+  },
+  {
+    title: "Java Training Certification",
+    org: "Internship Program",
+    date: "2023",
+    desc: "Advanced training in Java Core.",
+    link: "/certificates/internship.jpeg",
+    icon: <FaCheckCircle />,
+    accent: "#fda4af",
+    tag: "Training",
+  },
+];
 
-  const handleNavClick = () => setOpen(false);
-
-  const handleMouseMove = (e) => {
-    const logo = logoRef.current;
-    if (!logo) return;
-    const { left, top, width, height } = logo.getBoundingClientRect();
-    const x = (e.clientX - left - width / 2) / 10;
-    const y = (e.clientY - top - height / 2) / 10;
-    logo.style.transform = `perspective(1000px) rotateX(${-y}deg) rotateY(${x}deg)`;
-  };
-
-  const handleMouseLeave = () => {
-    if (logoRef.current) logoRef.current.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
-  };
-
-  // YOUR ACTUAL DATA LINKED TO YOUR FILES
-  const achievements = [
-    {
-      title: "Academic Excellence - 2nd Position",
-      org: "Diploma-SBTE Board",
-      date: "Gold Medalist",
-      desc: "Secured the trophy for 1st position in Diploma for outstanding academic performance.",
-      link: "/certificates/academic.jpeg", // Added the subfolder path
-      icon: <FaTrophy />
-    },
-    {
-      title: "GenPowerd Data Analytics",
-      org: "Forage",
-      date: "2024",
-      desc: "Professional certification in Data Analytics and visualization techniques.",
-      link: "/certificates/forage.png",
-      icon: <FaAward />
-    },
-    {
-      title: "HCL Hackathon Certificate",
-      org: "Guvi HCL",
-      date: "Participant",
-      desc: "Recognized for innovative problem-solving in the HCL Hackathon event.",
-      link: "/certificates/hackathon.jpeg",
-      icon: <FaAward />
-    },
-    {
-      title: "Java Training Certification",
-      org: "Internship Program",
-      date: "2023",
-      desc: "Advanced training in Java Core and Full Stack development concepts.",
-      link: "/certificates/internship.jpeg",
-      icon: <FaCheckCircle />
-    },
-    {
-      title: "Academic Achievement Trophy",
-      org: "Excellence Award",
-      date: "Diploma",
-      desc: "Trophy awarded for securing top-tier academic excellence in technical studies.",
-      link: "/certificates/trophy2.png",
-      icon: <FaTrophy />
-    },
-    {
-      title: "Secondary Education Award",
-      org: "10th Grade Merit",
-      date: "Merit List",
-      desc: "Awarded for securing exceptional marks in the 10th-grade board examinations.",
-     
-      link: "/certificates/trophy1.png",
-      icon: <FaTrophy />
-    },
-    {
-      title: "Web Designing Training",
-      org: "Web Tech Solutions",
-      date: "2023",
-      desc: "Comprehensive training in modern web design, UI/UX, and responsive development.",
-      link: "/certificates/web.jpeg",
-      icon: <FaAward />
-    }
-  ];
+const CascadeCard = ({ item, index }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <section className={`certs-section ${darkMode ? "dark" : ""}`}>
-      <nav className="navbar">
-        <div className="logo" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
-          <div className="logo-branding" ref={logoRef}>
-            <div className="logo-scanner"><span className="logo-letter">K</span><div className="logo-beam"></div></div>
-            <div className="logo-ring"></div>
+    <motion.div
+      ref={ref}
+      initial={{ y: -120, opacity: 0, scale: 0.8, rotate: index % 2 === 0 ? -6 : 6 }}
+      animate={isInView ? { y: 0, opacity: 1, scale: 1, rotate: 0 } : {}}
+      transition={{
+        delay: index * 0.1,
+        duration: 0.7,
+        type: "spring",
+        stiffness: 260,
+        damping: 18,
+      }}
+      whileHover={{ y: -5, scale: 1.01 }}
+      className="achieve-card-wrapper"
+    >
+      <div className="achieve-card" style={{ "--accent": item.accent }}>
+        <div className="achieve-left-bar" />
+        <div className="achieve-glow" />
+
+        <div className="achieve-icon-box">{item.icon}</div>
+
+        <div className="achieve-content">
+          <div className="achieve-top-row">
+            <span className="achieve-tag">{item.tag}</span>
+            <span className="achieve-date">{item.date}</span>
           </div>
-          <div className="logo-info">
-            <span className="logo-name">KRISHNA</span>
-            <div className="logo-status"><span className="status-dot"></span><span className="status-text">MURARI</span></div>
-          </div>
+
+          <h3 className="achieve-title">{item.title}</h3>
+
+          <p className="achieve-org">
+            <FaCheckCircle className="check-icon" /> {item.org}
+          </p>
+
+          <p className="achieve-desc">{item.desc}</p>
+
+          <a href={item.link} target="_blank" rel="noreferrer" className="achieve-btn">
+            Verify Achievement <FaExternalLinkAlt className="link-icon" />
+          </a>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+function TrainingAchievements() {
+  return (
+    <section className="achieve-section">
+      <div className="achieve-container">
+        <div className="achieve-header">
+          <span className="achieve-label">MILESTONES & RECOGNITION</span>
+          <h2 className="achieve-main-title">
+            Training & <span className="highlight">Achievements</span>
+          </h2>
+          <p className="achieve-subtext">
+            Certifications, awards, and training programs that shaped my technical journey.
+          </p>
         </div>
 
-        <div className="menu-toggle" onClick={() => setOpen(!open)}>
-          {open ? <FaTimes /> : <FaBars />}
-        </div>
-
-        <div className={`nav-links ${open ? "mobile-open" : ""}`}>
-          <NavLink to="/about" onClick={handleNavClick}><FaUser /> About</NavLink>
-          <NavLink to="/skills" onClick={handleNavClick}><FaTools /> Skills</NavLink>
-          <NavLink to="/projects" onClick={handleNavClick}><FaProjectDiagram /> Projects</NavLink>
-          <NavLink to="/trainingachievements" className="active" onClick={handleNavClick}><FaBriefcase /> Certs</NavLink>
-          <NavLink to="/education" onClick={handleNavClick}><FaGraduationCap /> Education</NavLink>
-          <NavLink to="/contact" onClick={handleNavClick}>
-                      <FaGraduationCap className="nav-i" /> <span>Contact</span>
-                    </NavLink>
-          <button className="theme-toggle" onClick={() => setDarkMode(!darkMode)}>
-            {darkMode ? <FaSun /> : <FaMoon />}
-          </button>
-        </div>
-      </nav>
-
-      <div className="certs-wrapper">
-        <h1 className="certs-title">Training & <span className="highlight">Achievements</span></h1>
-        
-        <div className="certs-grid">
+        <div className="achieve-list">
           {achievements.map((item, index) => (
-            <div className="cert-card" key={index}>
-              <div className="cert-icon-box">
-                <span className="award-icon">{item.icon}</span>
-              </div>
-              <div className="cert-content">
-                <span className="cert-date">{item.date}</span>
-                <h3 className="cert-name">{item.title}</h3>
-                <p className="cert-org"><FaCheckCircle className="check-i" /> {item.org}</p>
-                <p className="cert-desc">{item.desc}</p>
-                {/* THIS LINK NOW OPENS YOUR IMAGE */}
-                <a href={item.link} target="_blank" rel="noreferrer" className="cert-link">
-                  Verify Achievement <FaExternalLinkAlt />
-                </a>
-              </div>
-            </div>
+            <CascadeCard key={index} item={item} index={index} />
           ))}
         </div>
       </div>

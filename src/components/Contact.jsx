@@ -1,142 +1,200 @@
-import React, { useState, useRef } from "react";
-import { NavLink } from "react-router-dom";
-import { 
-  FaUser, FaTools, FaProjectDiagram, FaBriefcase, FaGraduationCap, 
-  FaBars, FaTimes, FaMoon, FaSun, FaEnvelope, FaLinkedin, FaMapMarkerAlt, FaPaperPlane 
-} from "react-icons/fa";
+import React, { useEffect, useRef, useState } from "react";
+import Matter from "matter-js";
+import { FaLinkedin, FaGithub, FaInstagram, FaPaperPlane, FaCheckCircle } from "react-icons/fa6";
+import contactAvatar from "../assets/my.jpg"; 
 import "./Contact.css";
 
-function Contact() {
-  const [open, setOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
-  const logoRef = useRef(null);
+// Sticker Imports
+import pic1 from "../assets/pic1.png";
+import pic2 from "../assets/pic2.png";
+import pic3 from "../assets/pic3.png";
+import pic4 from "../assets/pic4.png";
+import pic5 from "../assets/pic5.png";
+import pic6 from "../assets/pic6.png";
+import pic7 from "../assets/pic7.png";
+import pic8 from "../assets/pic8.png";
+
+const Contact = React.forwardRef((props, ref) => {
+  const sceneRef = useRef(null);
+  const engineRef = useRef(null);
   
-  // Logic to detect if we just came back from a successful submission
-  const [submitted, setSubmitted] = useState(window.location.search.includes('success=true'));
+  // Form submission status states
+  const [formStatus, setFormStatus] = useState("idle"); // idle | sending | success | error
 
-  const handleNavClick = () => setOpen(false);
+  useEffect(() => {
+    if (!sceneRef.current) return;
 
-  const handleMouseMove = (e) => {
-    const logo = logoRef.current;
-    if (!logo) return;
-    const { left, top, width, height } = logo.getBoundingClientRect();
-    const x = (e.clientX - left - width / 2) / 10;
-    const y = (e.clientY - top - height / 2) / 10;
-    logo.style.transform = `perspective(1000px) rotateX(${-y}deg) rotateY(${x}deg)`;
-  };
+    const engine = Matter.Engine.create();
+    engineRef.current = engine;
+    const world = engine.world;
 
-  const handleMouseLeave = () => {
-    if (logoRef.current) logoRef.current.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+    const sceneWidth = sceneRef.current.clientWidth;
+    const render = Matter.Render.create({
+      element: sceneRef.current,
+      engine: engine,
+      options: {
+        width: sceneWidth,
+        height: 180,
+        wireframes: false,
+        background: "transparent",
+      },
+    });
+
+    const ground = Matter.Bodies.rectangle(sceneWidth / 2, 190, sceneWidth * 2, 20, { isStatic: true });
+    const wallLeft = Matter.Bodies.rectangle(-10, 90, 20, 200, { isStatic: true });
+    const wallRight = Matter.Bodies.rectangle(sceneWidth + 10, 90, 20, 200, { isStatic: true });
+
+    const stickerImages = [pic1, pic2, pic3, pic4, pic5, pic6, pic7, pic8];
+    const stickerBodies = stickerImages.map((img, i) => {
+      return Matter.Bodies.rectangle(60 + i * (sceneWidth / 9), 50, 60, 60, {
+        restitution: 0.6,
+        friction: 0.1,
+        render: { sprite: { texture: img, xScale: 0.35, yScale: 0.35 } }
+      });
+    });
+
+    const mouse = Matter.Mouse.create(render.canvas);
+    const mouseConstraint = Matter.MouseConstraint.create(engine, {
+      mouse: mouse,
+      constraint: { stiffness: 0.2, render: { visible: false } }
+    });
+
+    Matter.Composite.add(world, [ground, wallLeft, wallRight, ...stickerBodies, mouseConstraint]);
+
+    const runner = Matter.Runner.create();
+    Matter.Runner.run(runner, engine);
+    Matter.Render.run(render);
+
+    // Handle responsiveness for the Matter canvas boundaries
+    const handleResize = () => {
+      if (!sceneRef.current || !render.canvas) return;
+      const newWidth = sceneRef.current.clientWidth;
+      
+      render.bounds.max.x = newWidth;
+      render.options.width = newWidth;
+      render.canvas.width = newWidth;
+      
+      Matter.Body.setPosition(ground, { x: newWidth / 2, y: 190 });
+      Matter.Body.setPosition(wallRight, { x: newWidth + 10, y: 90 });
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      Matter.Render.stop(render);
+      Matter.Runner.stop(runner);
+      Matter.Engine.clear(engine);
+      Matter.Composite.clear(world, false);
+      if (render.canvas) render.canvas.remove();
+    };
+  }, []);
+
+  // Form Submission Handler using Web3Forms
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setFormStatus("sending");
+
+    const formData = new FormData(e.target);
+    
+    // Web3Forms Public Access Key
+    formData.append("access_key", "YOUR_WEB3FORMS_ACCESS_KEY_HERE");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setFormStatus("success");
+        e.target.reset(); // Reset form fields on success
+      } else {
+        setFormStatus("error");
+      }
+    } catch (error) {
+      console.error("Form error:", error);
+      setFormStatus("error");
+    }
   };
 
   return (
-    <section className={`contact-page ${darkMode ? "dark" : ""}`}>
-      {/* --- Unified Navbar --- */}
-      <nav className="navbar">
-        <div className="logo" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
-          <div className="logo-branding" ref={logoRef}>
-            <div className="logo-scanner"><span className="logo-letter">K</span><div className="logo-beam"></div></div>
-            <div className="logo-ring"></div>
+    <section ref={ref} className="contact-section-wrapper">
+      <div className="split-contact-container">
+        
+        {/* LEFT SIDE: AVATAR & SOCIALS */}
+        <div className="contact-left-panel">
+          <div className="avatar-wrapper">
+            <div className="avatar-glow"></div>
+            <img src={contactAvatar} alt="Profile" className="contact-avatar" />
           </div>
-          <div className="logo-info">
-            <span className="logo-name">KRISHNA</span>
-            <div className="logo-status"><span className="status-dot"></span><span className="status-text">MURARI</span></div>
-          </div>
-        </div>
-
-        <div className="menu-toggle" onClick={() => setOpen(!open)}>
-          {open ? <FaTimes /> : <FaBars />}
-        </div>
-
-        <div className={`nav-links ${open ? "mobile-open" : ""}`}>
-          <NavLink to="/about" onClick={handleNavClick}><FaUser /> About</NavLink>
-          <NavLink to="/skills" onClick={handleNavClick}><FaTools /> Skills</NavLink>
-          <NavLink to="/projects" onClick={handleNavClick}><FaProjectDiagram /> Projects</NavLink>
-          <NavLink to="/trainingachievements" onClick={handleNavClick}><FaBriefcase /> Certs</NavLink>
-          <NavLink to="/education" onClick={handleNavClick}><FaGraduationCap /> Education</NavLink>
-          <NavLink to="/contact" className="active" onClick={handleNavClick}><FaEnvelope /> Contact</NavLink>
-          <button className="theme-toggle" onClick={() => setDarkMode(!darkMode)}>
-            {darkMode ? <FaSun /> : <FaMoon />}
-          </button>
-        </div>
-      </nav>
-
-      {/* --- Contact Content --- */}
-      <div className="contact-container">
-        <div className="contact-info">
-          <h1 className="contact-title">Let's <span className="highlight">Connect</span></h1>
-          <p className="contact-subtitle">I’m currently looking for new opportunities. Whether you have a question or just want to say hi, I’ll try my best to get back to you!</p>
           
-          <div className="info-items">
-            <div className="info-item">
-              <div className="icon-box"><FaEnvelope /></div>
-              <div>
-                <h4>Email</h4>
-                <p>krishnamutari160@gmail.com</p>
-              </div>
-            </div>
-            <div className="info-item">
-              <div className="icon-box"><FaLinkedin /></div>
-              <div>
-                <h4>LinkedIn</h4>
-                <p>https://www.linkedin.com</p>
-              </div>
-            </div>
-            <div className="info-item">
-              <div className="icon-box"><FaMapMarkerAlt /></div>
-              <div>
-                <h4>Location</h4>
-                <p>Ghaziabad, Uttar Pradesh</p>
-              </div>
-            </div>
+          <div className="social-icon-bar">
+            <a href="https://github.com/murari-kris" target="_blank" rel="noreferrer" className="social-icon-link github"><FaGithub /></a>
+            <a href="https://www.linkedin.com/in/javadeveloper-krishna-murari/" target="_blank" rel="noreferrer" className="social-icon-link linkedin"><FaLinkedin /></a>
+            <a href="https://instagram.com" target="_blank" rel="noreferrer" className="social-icon-link instagram"><FaInstagram /></a>
           </div>
+
+          <p className="contact-message-text">
+            Let's build something <span className="mint-text">great</span>.
+          </p>
         </div>
 
-        {/* --- Form Section --- */}
-        <div className="contact-form-container">
-          
-          {/* Success Banner - Appears only after redirect */}
-          {submitted && (
-            <div className="success-banner" style={{ 
-              padding: '15px', 
-              background: '#10b981', 
-              color: 'white', 
-              borderRadius: '12px', 
-              marginBottom: '20px',
-              textAlign: 'center',
-              fontWeight: 'bold',
-              boxShadow: '0 4px 12px rgba(16, 185, 129, 0.2)'
-            }}>
-              ✓ Message sent successfully! I'll get back to you soon.
-            </div>
-          )}
+        {/* RIGHT SIDE: CONTACT FORM */}
+        <div className="contact-right-panel">
+          <div className="form-card-glass">
+            <header className="form-intro">
+              <h2>Get In Touch</h2>
+              <p>I'm open to new opportunities. Let's talk!</p>
+            </header>
+            
+            {formStatus === "success" ? (
+              <div className="form-success-state">
+                <FaCheckCircle className="success-icon" />
+                <h3>Message Sent Successfully!</h3>
+                <p>Thank you for reaching out. I will get back to you as soon as possible.</p>
+                <button onClick={() => setFormStatus("idle")} className="mint-submit-button reset-btn">
+                  Send Another Message
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="contact-form-main">
+                {/* Anti-spam honey pot field */}
+                <input type="checkbox" name="botcheck" className="hidden-botcheck" style={{ display: "none" }} />
 
-          <form 
-            action="https://formspree.io/f/mjgeaddn" 
-            method="POST" 
-            className="contact-form"
-          >
-            <div className="form-group">
-              <input type="text" name="name" placeholder="Your Name" required />
-            </div>
-            <div className="form-group">
-              <input type="email" name="email" placeholder="Your Email" required />
-            </div>
-            <div className="form-group">
-              <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
-            </div>
-            
-            {/* Redirect with success flag */}
-            <input type="hidden" name="_next" value="http://localhost:5173/contact?success=true" />
-            
-            <button type="submit" className="submit-btn">
-              Send Message <FaPaperPlane />
-            </button>
-          </form>
+                <div className="input-field-group">
+                  <label htmlFor="name">Name</label>
+                  <input type="text" id="name" name="name" placeholder="Your Name" required />
+                </div>
+                <div className="input-field-group">
+                  <label htmlFor="email">Email</label>
+                  <input type="email" id="email" name="email" placeholder="email@example.com" required />
+                </div>
+                <div className="input-field-group">
+                  <label htmlFor="message">Message</label>
+                  <textarea id="message" name="message" placeholder="How can I help you?" rows="4" required></textarea>
+                </div>
+                
+                <button type="submit" className="mint-submit-button" disabled={formStatus === "sending"}>
+                  {formStatus === "sending" ? "Sending..." : "Send Message"} 
+                  {formStatus !== "sending" && <FaPaperPlane />}
+                </button>
+
+                {formStatus === "error" && (
+                  <p className="form-error-message">Something went wrong. Please try again or email directly.</p>
+                )}
+              </form>
+            )}
+          </div>
         </div>
       </div>
+
+      {/* PHYSICS FOOTER */}
+      <div className="physics-container" ref={sceneRef}></div>
     </section>
   );
-}
+});
 
 export default Contact;

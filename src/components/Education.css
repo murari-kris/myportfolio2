@@ -1,161 +1,527 @@
-/* --- Background Settings --- */
-.education-page {
-  background: linear-gradient(135deg, #f3e8ff 0%, #ffffff 50%, #e0fdf4 100%);
+/* --- SECTION BASE --- */
+.education-section {
+  background: #030507;
   min-height: 100vh;
-  transition: all 0.4s ease;
-  overflow-x: hidden;
+  padding: 55px 5% 50px; /* Reduced vertical padding from 90px/70px */
 }
 
-.education-page.dark {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-}
-
-.content.education {
-  padding: 80px 8%;
-  max-width: 1200px;
+.education-container {
+  max-width: 1100px;
   margin: 0 auto;
 }
 
-.edu-title {
+/* --- HEADER --- */
+.education-header {
+  margin-bottom: 28px; /* Reduced from 44px to pull the boxes higher */
   text-align: center;
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 800;
-  margin-bottom: 60px;
-  color: #1e293b;
 }
 
-.dark .edu-title { color: #ffffff; }
-.highlight { color: #8b5cf6; } /* The new signature Purple */
-
-/* --- Timeline Logic --- */
-.education-list {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 60px;
+.header-label {
+  color: #c1ffda;
+  font-weight: 700;
+  letter-spacing: 4px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px; /* Reduced from 10px */
 }
 
-/* Center Line - Now Violet */
-.education-list::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 0;
-  transform: translateX(-50%);
-  width: 3px;
-  height: 100%;
-  background: #8b5cf6;
-  border-radius: 10px;
-  opacity: 0.3;
+.header-title {
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  font-weight: 900;
+  letter-spacing: -2.5px;
+  color: #fff;
+  line-height: 1.05;
+  margin-bottom: 6px; /* Reduced from 8px */
 }
 
-/* --- The Boxes --- */
-.edu-box {
-  width: 420px;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(12px);
-  padding: 30px;
-  border-radius: 24px;
-  border: 1px solid rgba(139, 92, 246, 0.1);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-  position: relative;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.highlight-text {
+  color: #c1ffda;
+  text-shadow: 0 0 30px rgba(193, 255, 218, 0.2);
 }
 
-.dark .edu-box {
-  background: rgba(30, 41, 59, 0.7);
-  border-color: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+.header-subtext {
+  color: #475569;
+  font-size: 0.88rem;
 }
 
-.edu-box:hover {
-  transform: translateY(-10px);
-  border-color: #8b5cf6;
-  box-shadow: 0 15px 40px rgba(139, 92, 246, 0.15);
+/* --- BENTO GRID --- */
+.bento-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 220px;
+  grid-template-rows: auto auto auto;
+  gap: 14px;
 }
 
-/* Timeline Node Icon */
-.edu-box::before {
-  content: "";
-  position: absolute;
-  width: 44px;
-  height: 44px;
-  background-image: var(--edu-icon);
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  border-radius: 50%;
-  background-color: #ffffff;
-  box-shadow: 0 0 0 4px #8b5cf6;
-  z-index: 5;
+/* --- REUSABLE COMPONENTS --- */
+.edu-badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 2px 9px;
+  border-radius: 100px;
 }
 
-/* Position Left/Right */
-.edu-box:nth-child(odd) {
-  align-self: flex-start;
-  margin-left: calc(50% - 468px);
-}
-
-.edu-box:nth-child(odd)::before {
-  right: -70px;
-  top: 25px;
-}
-
-.edu-box:nth-child(even) {
-  align-self: flex-end;
-  margin-right: calc(50% - 468px);
-}
-
-.edu-box:nth-child(even)::before {
-  left: -70px;
-  top: 25px;
-}
-
-/* Card Content */
-.edu-degree {
-  color: #8b5cf6;
-  font-size: 1.4rem;
-  margin-bottom: 12px;
+.year-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px; /* Slimmed padding slightly down from 4px 12px */
+  border-radius: 100px;
+  font-size: 0.72rem;
   font-weight: 700;
 }
 
-.edu-institute {
+.year-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.accent-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 20px 0 0 20px;
+}
+
+.card-glow {
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* --- CARD BASE --- */
+.ecard {
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1), box-shadow 0.3s;
+}
+
+.ecard:hover {
+  transform: translateY(-5px) scale(1.01);
+}
+
+/* --- CARD SPECIFICS --- */
+.card-btech {
+  grid-column: 1 / 3;
+  grid-row: 1 / 2;
+  background: rgba(193, 255, 218, 0.03);
+  border: 1px solid rgba(193, 255, 218, 0.14);
+  padding: 16px 20px; /* Reduced from 22px 24px */
+}
+
+.card-content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.card-main-info {
+  flex: 1;
+  min-width: 220px;
+}
+
+.card-top-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 15px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  padding-bottom: 10px;
+  gap: 7px;
+  margin-bottom: 6px; /* Reduced from 10px */
 }
 
-.dark .edu-institute { border-color: rgba(255, 255, 255, 0.1); }
-
-.edu-institute img { width: 35px; height: 35px; border-radius: 5px; }
-.edu-institute span { font-weight: 600; font-size: 0.95rem; color: #475569; }
-.dark .edu-institute span { color: #cbd5e1; }
-
-.edu-desc { font-size: 0.95rem; color: #64748b; line-height: 1.6; }
-.dark .edu-desc { color: #94a3b8; }
-
-.edu-year {
-  display: inline-block;
-  margin-top: 15px;
-  font-weight: 800;
-  color: #8b5cf6;
-  background: rgba(139, 92, 246, 0.1);
-  padding: 4px 12px;
-  border-radius: 50px;
-  font-size: 0.85rem;
+.sparkle {
+  color: #c1ffda;
+  font-size: 0.75rem;
 }
 
-/* --- Mobile Responsive (Redmi) --- */
-@media (max-width: 1024px) {
-  .education-list::before { left: 20px; transform: none; }
-  .edu-box { width: 85%; margin: 0 0 0 45px !important; align-self: flex-start !important; }
-  .edu-box::before { left: -44px !important; right: auto !important; width: 35px; height: 35px; }
+.degree-title {
+  font-size: 1.15rem; /* Down slightly from 1.2rem */
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.5px;
+  margin-bottom: 6px; /* Reduced from 10px */
+  line-height: 1.2;
 }
 
+.degree-accent {
+  color: #c1ffda;
+}
+
+.college-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px; /* Reduced from 8px */
+}
+
+.logo-box {
+  width: 26px; /* Reduced from 28px */
+  height: 26px; /* Reduced from 28px */
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-box img {
+  width: 100%;
+  object-fit: contain;
+}
+
+.college-name {
+  color: #64748b;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.degree-desc {
+  color: #475569;
+  font-size: 0.78rem; /* Adjusted from 0.8rem */
+  line-height: 1.5; /* Tightened line height from 1.6 */
+  margin-bottom: 10px; /* Reduced from 12px */
+  max-width: 440px;
+}
+
+/* --- ICONS SCROLL CARD --- */
+.card-icons {
+  grid-column: 3 / 4;
+  grid-row: 1 / 3;
+  max-height: 250px; /* Constrains desktop layout tracking heights securely */
+  background: rgba(165, 180, 252, 0.03);
+  border: 1px solid rgba(165, 180, 252, 0.14);
+}
+
+.scroll-gradient-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(to bottom, #030507, transparent);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.scroll-gradient-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(to top, #030507, transparent);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.icons-scroll-wrapper {
+  overflow: hidden;
+  flex: 1;
+  padding: 12px 10px;
+}
+
+.icons-track {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  animation: scroll-up 14s linear infinite;
+}
+
+@keyframes scroll-up {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+.icons-scroll-wrapper:hover .icons-track {
+  animation-play-state: paused;
+}
+
+.icon-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(165, 180, 252, 0.06);
+  border: 1px solid rgba(165, 180, 252, 0.12);
+  border-radius: 10px;
+  padding: 6px 10px; /* Trimmed down padding from 7px 11px */
+}
+
+.emoji {
+  font-size: 0.95rem;
+}
+
+.label {
+  font-size: 0.68rem;
+  color: #a5b4fc;
+  font-weight: 600;
+}
+
+/* --- DIPLOMA & BEZIER CARDS --- */
+.card-diploma {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+  background: rgba(253, 164, 175, 0.03);
+  border: 1px solid rgba(253, 164, 175, 0.14);
+  padding: 16px 18px; /* Reduced from 20px 22px */
+}
+
+.degree-title-small {
+  font-size: 1.02rem; /* Down from 1.05rem */
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.4px;
+  margin-bottom: 6px; /* Reduced from 10px */
+  line-height: 1.2;
+}
+
+.college-name-small {
+  color: #64748b;
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.degree-desc-small {
+  color: #475569;
+  font-size: 0.76rem; /* Adjusted from 0.78rem */
+  line-height: 1.5; /* Tightened from 1.6 */
+  margin-bottom: 8px; /* Reduced from 12px */
+}
+
+.card-bezier {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+  background: rgba(252, 211, 77, 0.03);
+  border: 1px solid rgba(252, 211, 77, 0.14);
+  padding: 16px 18px; /* Reduced from 20px 22px */
+}
+
+.bezier-svg {
+  width: 100%;
+  max-height: 72px; /* Clamps drawing panel safely on desktop profiles */
+  border-radius: 10px;
+  background: rgba(252, 211, 77, 0.03);
+  border: 1px solid rgba(252, 211, 77, 0.08);
+}
+
+.bezier-path {
+  stroke: #c1ffda;
+  stroke-width: 2;
+  fill: none;
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: draw-path 2.5s ease forwards infinite;
+}
+
+@keyframes draw-path {
+  0% { stroke-dashoffset: 400; opacity: 1; }
+  80% { stroke-dashoffset: 0; opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0.3; }
+}
+
+.ctrl-line {
+  stroke: #a5b4fc;
+  stroke-width: 0.8;
+  stroke-dasharray: 3 3;
+  opacity: 0.45;
+}
+
+.ctrl-handle {
+  fill: none;
+  stroke: #a5b4fc;
+  stroke-width: 1.2;
+}
+
+.pen-grp {
+  animation: pen-move 2.5s ease forwards infinite;
+}
+
+@keyframes pen-move {
+  0% { offset-distance: 0%; opacity: 1; }
+  80% { offset-distance: 100%; opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
+/* --- SCHOOL CARD (FOOTER) --- */
+.card-school {
+  grid-column: 1 / 4;
+  grid-row: 3 / 4;
+  background: rgba(165, 180, 252, 0.03);
+  border: 1px solid rgba(165, 180, 252, 0.14);
+  padding: 16px 22px; /* Reduced from 20px 26px */
+}
+
+.school-flex-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.school-info-left {
+  flex: 1;
+  min-width: 220px;
+}
+
+.degree-title-mid {
+  font-size: 1.05rem; /* Down from 1.1rem */
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.4px;
+  margin-bottom: 6px; /* Reduced from 10px */
+  line-height: 1.2;
+}
+
+.degree-desc-mid {
+  color: #475569;
+  font-size: 0.76rem; /* Adjusted from 0.78rem */
+  line-height: 1.5; /* Tightened from 1.6 */
+  margin-bottom: 8px; /* Reduced from 12px */
+  max-width: 500px;
+}
+
+.stats-container {
+  display: flex;
+  gap: 10px;
+}
+
+.stat-box {
+  text-align: center;
+  background: rgba(165, 180, 252, 0.06);
+  border: 1px solid rgba(165, 180, 252, 0.14);
+  border-radius: 14px;
+  padding: 10px 14px; /* Reduced from 14px 18px */
+  min-width: 68px;
+}
+
+.stat-val {
+  font-size: 1.2rem; /* Down from 1.3rem */
+  font-weight: 900;
+  color: #a5b4fc;
+  letter-spacing: -0.5px;
+  margin-bottom: 2px; /* Reduced from 3px */
+}
+
+.stat-label {
+  font-size: 0.62rem; /* Slightly reduced from 0.65rem */
+  color: #475569;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+/* Mobile Devices (Redmi, iPhone, etc.) */
 @media (max-width: 600px) {
-  .edu-box { width: 100%; margin-left: 0 !important; }
-  .education-list::before, .edu-box::before { display: none; }
+  .education-section {
+    padding: 60px 4% 40px;
+  }
+
+  .header-title {
+    font-size: 1.8rem;
+    letter-spacing: -1px;
+    line-height: 1.2;
+  }
+
+  .bento-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ecard {
+    grid-column: auto !important;
+    grid-row: auto !important;
+    width: 100%;
+    min-height: min-content;
+    padding: 20px !important;
+    height: auto !important;
+  }
+
+  .card-content-wrapper, .school-flex-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .card-main-info, .school-info-left {
+    min-width: 100%;
+  }
+
+  .degree-desc, .degree-desc-mid, .degree-desc-small {
+    max-width: 100%;
+    font-size: 0.85rem;
+    margin-bottom: 15px;
+  }
+
+  .stats-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .stat-box {
+    padding: 10px 5px;
+    min-width: 0;
+  }
+
+  .stat-val {
+    font-size: 1rem;
+  }
+
+  .card-icons {
+    height: 80px !important; 
+    max-height: none; /* Clear desktop limit for mobile */
+    order: 2; 
+    overflow: hidden;
+  }
+
+  .icons-track {
+    display: flex !important;
+    flex-direction: row !important;
+    width: max-content;
+    gap: 12px;
+    padding: 0 10px;
+    animation: scroll-left 20s linear infinite !important;
+  }
+
+  @keyframes scroll-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .icon-item {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 8px 14px;
+  }
+
+  .scroll-gradient-top, .scroll-gradient-bottom {
+    display: none;
+  }
+
+  .card-bezier {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .bezier-svg {
+    margin-top: 10px;
+    height: auto;
+    max-height: 80px;
+  }
 }

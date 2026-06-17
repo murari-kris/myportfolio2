@@ -1,124 +1,212 @@
-/* --- BASE STYLES --- */
-.certs-section {
-  background: linear-gradient(135deg, #f3e8ff 0%, #ffffff 50%, #e0fdf4 100%);
+.achieve-section {
+  background: #030507;
+  padding: 110px 5%;
   min-height: 100vh;
-  font-family: 'Poppins', sans-serif;
-  transition: all 0.4s ease;
-  overflow-x: hidden;
 }
 
-/* --- MOBILE OPTIMIZED DARK MODE --- */
-.certs-section.dark {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  color: #f8fafc;
-}
-
-.certs-wrapper {
-  padding: 4rem 8%;
-  max-width: 1100px;
+.achieve-container {
+  max-width: 860px;
   margin: 0 auto;
 }
 
-.certs-title {
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 800;
+/* --- HEADER --- */
+.achieve-header {
+  margin-bottom: 64px;
   text-align: center;
-  margin-bottom: 3.5rem;
 }
 
-.highlight { color: #8b5cf6; }
+.achieve-label {
+  color: #c1ffda;
+  font-weight: 700;
+  letter-spacing: 4px;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 14px;
+}
 
-/* --- CERTIFICATE CARDS --- */
-.certs-grid {
+.achieve-main-title {
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  letter-spacing: -2px;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.achieve-main-title .highlight {
+  color: #c1ffda;
+  text-shadow: 0 0 40px rgba(193, 255, 218, 0.22);
+}
+
+.achieve-subtext {
+  color: #64748b;
+  font-size: 0.95rem;
+  max-width: 480px;
+  margin: 15px auto 0;
+}
+
+/* --- LIST --- */
+.achieve-list {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 20px;
 }
 
-.cert-card {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+/* --- CARD --- */
+.achieve-card-wrapper {
+  width: 100%;
+}
+
+.achieve-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 24px;
-  padding: 30px;
+  padding: 28px;
   display: flex;
-  gap: 25px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-  transition: 0.3s ease;
+  gap: 24px;
+  backdrop-filter: blur(16px);
+  overflow: hidden;
+  transition: border-color 0.3s;
 }
 
-.dark .cert-card {
-  background: rgba(30, 41, 59, 0.7);
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+.achieve-card:hover {
+  border-color: var(--accent);
 }
 
-.cert-card:hover {
-  transform: scale(1.02);
-  border-color: #8b5cf6;
+.achieve-left-bar {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: var(--accent);
+  box-shadow: 0 0 15px var(--accent);
 }
 
-.cert-icon-box {
-  background: #f3e8ff;
-  width: 70px;
-  height: 70px;
-  border-radius: 20px;
+.achieve-glow {
+  position: absolute;
+  top: -40px; left: -40px;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, var(--accent) 10%, transparent 70%);
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.achieve-icon-box {
+  flex-shrink: 0;
+  width: 52px; height: 52px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+  font-size: 1.3rem;
+  color: var(--accent);
 }
 
-.dark .cert-icon-box { background: #334155; }
+.achieve-content {
+  flex: 1;
+}
 
-.award-icon { font-size: 2rem; color: #8b5cf6; }
+.achieve-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
 
-/* --- TEXT CONTENT --- */
-.cert-date {
-  font-size: 0.8rem;
+.achieve-tag {
+  font-size: 0.65rem;
   font-weight: 700;
-  color: #8b5cf6;
-  background: rgba(139, 92, 246, 0.1);
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.03);
   padding: 4px 12px;
-  border-radius: 50px;
-  margin-bottom: 10px;
-  display: inline-block;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.cert-name { font-size: 1.4rem; font-weight: 700; margin: 8px 0; }
-.cert-org { font-weight: 600; display: flex; align-items: center; gap: 8px; color: #4b5563; }
-.dark .cert-org { color: #94a3b8; }
-.check-i { color: #10b981; }
+.achieve-date {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 600;
+}
 
-.cert-desc { font-size: 0.95rem; color: #6b7280; margin: 12px 0 20px; line-height: 1.6; }
-.dark .cert-desc { color: #94a3b8; }
+.achieve-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+}
 
-.cert-link {
-  text-decoration: none;
-  font-weight: 700;
-  color: #8b5cf6;
-  font-size: 0.9rem;
-  display: inline-flex;
+.achieve-org {
+  font-size: 0.85rem;
+  color: var(--accent);
+  font-weight: 600;
+  display: flex;
   align-items: center;
   gap: 6px;
-  transition: 0.2s;
+  margin-bottom: 10px;
 }
 
-.cert-link:hover { text-decoration: underline; gap: 10px; }
+.achieve-desc {
+  color: #94a3b8;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
 
-/* --- RESPONSIVE (REDMI) --- */
-@media (max-width: 1024px) {
-  .nav-links {
-    position: fixed; top: 0; right: -100%; width: 280px; height: 100vh;
-    background: #fff; flex-direction: column; justify-content: center;
-    padding: 2.5rem; transition: 0.4s; z-index: 1000;
+.achieve-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.achieve-btn:hover {
+  background: var(--accent);
+  color: #000;
+}
+
+/* --- MOBILE RESPONSIVE (Redmi/Mobile Fix) --- */
+@media (max-width: 650px) {
+  .achieve-section {
+    padding: 60px 4% 40px;
   }
-  .dark .nav-links { background: #0f172a; }
-  .nav-links.mobile-open { right: 0; }
-}
 
-@media (max-width: 768px) {
-  .cert-card { flex-direction: column; text-align: center; align-items: center; padding: 25px; }
-  .cert-icon-box { width: 60px; height: 60px; }
-  .certs-wrapper { padding: 2rem 5%; }
+  .achieve-card {
+    flex-direction: column; /* Stack icon and content */
+    gap: 16px;
+    padding: 24px;
+  }
+
+  .achieve-icon-box {
+    width: 44px; height: 44px;
+    font-size: 1.1rem;
+  }
+
+  .achieve-main-title {
+    font-size: 2.2rem;
+  }
+
+  .achieve-top-row {
+    flex-direction: row; /* Keep tag and date side by side */
+    width: 100%;
+  }
+
+  .achieve-title {
+    font-size: 1.1rem;
+  }
+
+  .achieve-btn {
+    width: 100%; /* Make button full width for easier tapping */
+    justify-content: center;
+  }
 }

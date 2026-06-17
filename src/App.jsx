@@ -1,45 +1,46 @@
 import React, { useRef } from "react";
-import { Routes, Route, useLocation, Navigate } from "react-router-dom";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
-
 import About from "./components/About";
 import Skills from "./components/Skills";
 import Projects from "./components/Projects";
 import Education from "./components/Education";
 import TrainingAchievements from "./components/TrainingAchievements";
 import Contact from "./components/Contact";
+
 function App() {
-  const location = useLocation();
-  const nodeRef = useRef(null);
+  const aboutRef = useRef(null);
+  const projectsRef = useRef(null);
+  const skillsRef = useRef(null);
+  const eduRef = useRef(null);
+  const trainRef = useRef(null);
+  const contactRef = useRef(null);
+
+  const scrollToSection = (elementRef) => {
+    if (elementRef.current) {
+      window.scrollTo({
+        top: elementRef.current.offsetTop,
+        behavior: "smooth",
+      });
+    }
+  };
 
   return (
     <div className="app-container">
-      {/* Side is removed here because About handles its own modern navigation */}
-      <div style={{ flex: 1 }}>
-        <TransitionGroup component={null}>
-          <CSSTransition
-            key={location.pathname}
-            timeout={400}
-            classNames="slide"
-            unmountOnExit
-            nodeRef={nodeRef}
-          >
-            <div ref={nodeRef}>
-              <Routes location={location}>
-                <Route path="/" element={<Navigate to="/about" replace />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/skills" element={<Skills />} />
-                <Route path="/projects" element={<Projects />} />
-                <Route path="/trainingachievements" element={<TrainingAchievements />} />
-                <Route path="/education" element={<Education />} />
-                <Route path="/contact" element={<Contact />} />
-              </Routes>
-            </div>
-          </CSSTransition>
-        </TransitionGroup>
-      </div>
+      {/* CRITICAL: Pass the ref DIRECTLY to the component.
+         Inside Projects.jsx, you must use React.forwardRef or 
+         simply attach the ID to the top-level div in that component.
+      */}
+      <div ref={aboutRef}><About onNavigate={scrollToSection} refs={{ aboutRef, projectsRef, skillsRef, eduRef, trainRef, contactRef }} /></div>
+      
+      {/* This is the section that needs to be "tall" for sticky to work */}
+      <div ref={projectsRef} style={{ display: 'block', overflow: 'visible' }}>
+  <Projects />
+</div>
+      
+      <div ref={skillsRef}><Skills /></div>
+      <div ref={eduRef}><Education /></div>
+      <div ref={trainRef}><TrainingAchievements /></div>
+      <div ref={contactRef}><Contact /></div>
     </div>
   );
 }
-
 export default App;
