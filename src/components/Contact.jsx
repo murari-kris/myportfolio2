@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import Matter from "matter-js";
-// FIXED: Split the icon imports into fa6 and fa sets correctly
 import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa6";
 import { FaPaperPlane } from "react-icons/fa"; 
 import contactAvatar from "../assets/my.jpg"; 
@@ -19,6 +18,10 @@ import pic8 from "../assets/pic8.png";
 const Contact = React.forwardRef((props, ref) => {
   const sceneRef = useRef(null);
   const engineRef = useRef(null);
+  
+  // State for form submission status
+  const [result, setResult] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const engine = Matter.Engine.create();
@@ -70,6 +73,39 @@ const Contact = React.forwardRef((props, ref) => {
     };
   }, []);
 
+  // Form Submission Handler
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+    setResult("Sending....");
+    
+    const formData = new FormData(event.target);
+    // Injects your unique Web3Forms Access Key
+    formData.append("access_key", "fc59439b-599b-46be-bc51-663b7a420958");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setResult("Message Sent Successfully!");
+        event.target.reset(); // Clears form fields
+      } else {
+        console.log("Error", data);
+        setResult(data.message);
+      }
+    } catch (error) {
+      console.log("Error", error);
+      setResult("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section ref={ref} className="contact-section-wrapper">
       <div className="split-contact-container">
@@ -100,23 +136,30 @@ const Contact = React.forwardRef((props, ref) => {
               <p>I'm open to new opportunities. Let's talk!</p>
             </header>
             
-            <form className="contact-form-main">
+            {/* Added onSubmit handler here */}
+            <form onSubmit={onSubmit} className="contact-form-main">
               <div className="input-field-group">
                 <label>Name</label>
-                <input type="text" placeholder="Your Name" required />
+                {/* Added explicit 'name' attribute for Web3Forms parsing */}
+                <input type="text" name="name" placeholder="Your Name" required />
               </div>
               <div className="input-field-group">
                 <label>Email</label>
-                <input type="email" placeholder="email@example.com" required />
+                {/* Added explicit 'name' attribute for Web3Forms parsing */}
+                <input type="email" name="name" placeholder="email@example.com" required />
               </div>
               <div className="input-field-group">
                 <label>Message</label>
-                <textarea placeholder="How can I help you?" rows="4"></textarea>
+                {/* Added explicit 'name' attribute for Web3Forms parsing */}
+                <textarea name="message" placeholder="How can I help you?" rows="4" required></textarea>
               </div>
-              <button type="submit" className="mint-submit-button">
-                Send Message <FaPaperPlane />
+              <button type="submit" disabled={isSubmitting} className="mint-submit-button">
+                {isSubmitting ? "Sending..." : "Send Message"} <FaPaperPlane />
               </button>
             </form>
+
+            {/* Status Message Display */}
+            {result && <p className="form-status-message">{result}</p>}
           </div>
         </div>
       </div>
