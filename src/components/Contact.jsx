@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import Matter from "matter-js";
-import { FaLinkedin, FaGithub, FaInstagram, FaPaperPlane, FaCheckCircle } from "react-icons/fa6";
+// FIXED: Split the icon imports into fa6 and fa sets correctly
+import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa6";
+import { FaPaperPlane } from "react-icons/fa"; 
 import contactAvatar from "../assets/my.jpg"; 
 import "./Contact.css";
 
@@ -17,36 +19,30 @@ import pic8 from "../assets/pic8.png";
 const Contact = React.forwardRef((props, ref) => {
   const sceneRef = useRef(null);
   const engineRef = useRef(null);
-  
-  // Form submission status states
-  const [formStatus, setFormStatus] = useState("idle"); // idle | sending | success | error
 
   useEffect(() => {
-    if (!sceneRef.current) return;
-
     const engine = Matter.Engine.create();
     engineRef.current = engine;
     const world = engine.world;
 
-    const sceneWidth = sceneRef.current.clientWidth;
     const render = Matter.Render.create({
       element: sceneRef.current,
       engine: engine,
       options: {
-        width: sceneWidth,
+        width: sceneRef.current.clientWidth,
         height: 180,
         wireframes: false,
         background: "transparent",
       },
     });
 
-    const ground = Matter.Bodies.rectangle(sceneWidth / 2, 190, sceneWidth * 2, 20, { isStatic: true });
+    const ground = Matter.Bodies.rectangle(window.innerWidth / 2, 190, window.innerWidth * 2, 20, { isStatic: true });
     const wallLeft = Matter.Bodies.rectangle(-10, 90, 20, 200, { isStatic: true });
-    const wallRight = Matter.Bodies.rectangle(sceneWidth + 10, 90, 20, 200, { isStatic: true });
+    const wallRight = Matter.Bodies.rectangle(window.innerWidth + 10, 90, 20, 200, { isStatic: true });
 
     const stickerImages = [pic1, pic2, pic3, pic4, pic5, pic6, pic7, pic8];
     const stickerBodies = stickerImages.map((img, i) => {
-      return Matter.Bodies.rectangle(60 + i * (sceneWidth / 9), 50, 60, 60, {
+      return Matter.Bodies.rectangle(200 + i * 150, 50, 60, 60, {
         restitution: 0.6,
         friction: 0.1,
         render: { sprite: { texture: img, xScale: 0.35, yScale: 0.35 } }
@@ -65,23 +61,7 @@ const Contact = React.forwardRef((props, ref) => {
     Matter.Runner.run(runner, engine);
     Matter.Render.run(render);
 
-    // Handle responsiveness for the Matter canvas boundaries
-    const handleResize = () => {
-      if (!sceneRef.current || !render.canvas) return;
-      const newWidth = sceneRef.current.clientWidth;
-      
-      render.bounds.max.x = newWidth;
-      render.options.width = newWidth;
-      render.canvas.width = newWidth;
-      
-      Matter.Body.setPosition(ground, { x: newWidth / 2, y: 190 });
-      Matter.Body.setPosition(wallRight, { x: newWidth + 10, y: 90 });
-    };
-
-    window.addEventListener("resize", handleResize);
-
     return () => {
-      window.removeEventListener("resize", handleResize);
       Matter.Render.stop(render);
       Matter.Runner.stop(runner);
       Matter.Engine.clear(engine);
@@ -89,36 +69,6 @@ const Contact = React.forwardRef((props, ref) => {
       if (render.canvas) render.canvas.remove();
     };
   }, []);
-
-  // Form Submission Handler using Web3Forms
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setFormStatus("sending");
-
-    const formData = new FormData(e.target);
-    
-    // Web3Forms Public Access Key
-    formData.append("access_key", "YOUR_WEB3FORMS_ACCESS_KEY_HERE");
-
-    try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        setFormStatus("success");
-        e.target.reset(); // Reset form fields on success
-      } else {
-        setFormStatus("error");
-      }
-    } catch (error) {
-      console.error("Form error:", error);
-      setFormStatus("error");
-    }
-  };
 
   return (
     <section ref={ref} className="contact-section-wrapper">
@@ -150,43 +100,23 @@ const Contact = React.forwardRef((props, ref) => {
               <p>I'm open to new opportunities. Let's talk!</p>
             </header>
             
-            {formStatus === "success" ? (
-              <div className="form-success-state">
-                <FaCheckCircle className="success-icon" />
-                <h3>Message Sent Successfully!</h3>
-                <p>Thank you for reaching out. I will get back to you as soon as possible.</p>
-                <button onClick={() => setFormStatus("idle")} className="mint-submit-button reset-btn">
-                  Send Another Message
-                </button>
+            <form className="contact-form-main">
+              <div className="input-field-group">
+                <label>Name</label>
+                <input type="text" placeholder="Your Name" required />
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="contact-form-main">
-                {/* Anti-spam honey pot field */}
-                <input type="checkbox" name="botcheck" className="hidden-botcheck" style={{ display: "none" }} />
-
-                <div className="input-field-group">
-                  <label htmlFor="name">Name</label>
-                  <input type="text" id="name" name="name" placeholder="Your Name" required />
-                </div>
-                <div className="input-field-group">
-                  <label htmlFor="email">Email</label>
-                  <input type="email" id="email" name="email" placeholder="email@example.com" required />
-                </div>
-                <div className="input-field-group">
-                  <label htmlFor="message">Message</label>
-                  <textarea id="message" name="message" placeholder="How can I help you?" rows="4" required></textarea>
-                </div>
-                
-                <button type="submit" className="mint-submit-button" disabled={formStatus === "sending"}>
-                  {formStatus === "sending" ? "Sending..." : "Send Message"} 
-                  {formStatus !== "sending" && <FaPaperPlane />}
-                </button>
-
-                {formStatus === "error" && (
-                  <p className="form-error-message">Something went wrong. Please try again or email directly.</p>
-                )}
-              </form>
-            )}
+              <div className="input-field-group">
+                <label>Email</label>
+                <input type="email" placeholder="email@example.com" required />
+              </div>
+              <div className="input-field-group">
+                <label>Message</label>
+                <textarea placeholder="How can I help you?" rows="4"></textarea>
+              </div>
+              <button type="submit" className="mint-submit-button">
+                Send Message <FaPaperPlane />
+              </button>
+            </form>
           </div>
         </div>
       </div>
