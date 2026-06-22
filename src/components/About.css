@@ -85,7 +85,6 @@ section {
   z-index: var(--nav-z);
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
   pointer-events: all;
-
 }
 
 .pill-nav a {
@@ -301,12 +300,12 @@ section {
   width: 100%;
   height: 100%;
   background-image: 
-    linear-gradient(to right, rgba(193, 255, 218, 0.12) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(193, 255, 218, 0.12) 1px, transparent 1px);
+    linear-gradient(to right, rgba(193, 255, 218, 0.35) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(193, 255, 218, 0.35) 1px, transparent 1px);
   background-size: 60px 60px;
-  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.5));
-  mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
-  -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.7));
+  mask-image: radial-gradient(circle at center, black 50%, transparent 95%);
+  -webkit-mask-image: radial-gradient(circle at center, black 50%, transparent 95%);
   pointer-events: none;
   z-index: 1;
 }
@@ -315,7 +314,7 @@ section {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(193, 255, 218, 0.2) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(193, 255, 218, 0.45) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
@@ -323,7 +322,7 @@ section {
   position: fixed;
   width: 600px;
   height: 600px;
-background: radial-gradient(circle, rgba(193, 255, 218, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(193, 255, 218, 0.15) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
   z-index: 0;
@@ -358,9 +357,7 @@ background: radial-gradient(circle, rgba(193, 255, 218, 0.15) 0%, transparent 70
 
 /* --- 9. LOGO ENTRANCE --- */
 .logo-entrance-container {
- 
-
-  position:fixed; 
+  position: fixed; 
   display: flex;
   align-items: center;
   gap: 15px;
@@ -574,22 +571,19 @@ background: radial-gradient(circle, rgba(193, 255, 218, 0.15) 0%, transparent 70
   }
 
   .pill-nav a {
-  text-decoration: none;
-  color: var(--text-dim);
-  font-size: 0.85rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  position: relative;
-}
+    text-decoration: none;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+  }
 
-/* Hover state with the mint color you requested */
-.pill-nav a:hover {
-  color: #c1ffda; 
-}
-
-
-  
+  /* Hover state with the mint color you requested */
+  .pill-nav a:hover {
+    color: #c1ffda; 
+  }
 
   /* 5. CONTENT ADJUSTMENTS (Visibility Fix) */
   .abode-content {
